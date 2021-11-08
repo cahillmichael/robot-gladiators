@@ -59,7 +59,6 @@ var fight = function(enemyName) {
 
 //function to start a new game
 var startGame = function() {
-    debugger;
     //reset player stats
     playerHealth = 100;
     playerAttack = 10;
@@ -74,6 +73,15 @@ var startGame = function() {
             enemyHealth = 50;
             //fight
             fight(pickedEnemyName);
+            //if not dead and enemies remain, offer shop option
+            if (playerHealth > 0 && i < enemyNames.length - 1) {
+                //ask if player wants to go to shop
+                var shopConfirm = window.confirm("The round has ended. Wanna go shopping?");
+                //if yes (true) call shop()
+                if (shopConfirm) {
+                shop();
+                }
+            }
         } else {
             window.alert("You have lost your robot in battle! Game Over!");
             break;
@@ -101,6 +109,50 @@ var endGame = function() {
         startGame();
     } else {
         window.alert("Goodbye.")
+    }
+};
+
+//shop function
+var shop = function() {
+    //ask player what they want to do
+    var shopOptionPrompt = window.prompt (
+        "Do ya wanna REFILL your health, UPGRADE your attack, or LEAVE the damn shop? Enter REFILL, UPGRADE, or LEAVE to make a choice"
+    );
+    //register player choice
+    switch (shopOptionPrompt) {
+        case "REFILL":
+        case "Refill":
+        case "refill":
+            if (playerMoney >= 7) {
+                window.alert("Refill your health by 20 for 7 dollars.");
+                playerHealth = playerHealth + 20;
+                playerMoney = playerMoney - 7;
+            } else {
+                window.alert("You can't afford this.");
+            }    
+            break;
+        case "UPGRADE":
+        case "Upgrade":
+        case "upgrade":
+            if (playerMoney >=7) {
+                window.alert("Upgrade your attack by 6 for 7 dollars.");
+                playerAttack = playerAttack + 6;
+                playerMoney = playerMoney - 7;
+            } else {
+                window.alert("You can't afford this.");
+            }
+            break;
+        case "LEAVE":
+        case "Leave":
+        case "leave":
+            window.alert("Get out the shop.");
+            //do nothing, end function
+            break;
+        default:
+            window.alert("You did not pick a valid option. Try again.");
+            //call shop() to force choice
+            shop();
+            break;
     }
 };
 
